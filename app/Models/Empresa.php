@@ -8,4 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Empresa extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'nombre',
+        'email',
+        'sitio_web',
+    ];
+
+    //Relacion uno a muchos
+
+    public function empleados()
+    {
+        return $this->hasMany(Empleado::class);
+    }
 }

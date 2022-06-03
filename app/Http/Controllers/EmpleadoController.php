@@ -9,7 +9,11 @@ class EmpleadoController extends Controller
 {
     public function index()
     {
-        return view('empleados.index');
+        return Empleado::all();
+    }
+
+    public function show($id){
+        return Empleado::findOrFail($id);
     }
 
     public function store(Request $request)
@@ -28,11 +32,23 @@ class EmpleadoController extends Controller
 
     public function update(Request $request, $id)
     {
-        return view('empleados.edit');
+        $request->validate([
+            'nombre' => 'nullable',
+            'apellido' => 'nullable',
+            'empresa_id' => 'nullable',
+            'email' => 'required|email|unique:empleados',
+            'telefono' => 'nullable',
+        ]);
+
+        $empleado = Empleado::findOrFail($id);
+        $empleado->update($request->all());
+        return $empleado;
     }
 
     public function destroy($id)
     {
-        return view('empleados.show');
+        $empleado = Empleado::findOrFail($id);
+        $empleado->delete();
+        return $empleado;
     }
 }
